@@ -15,14 +15,16 @@ public class HandleMenu {
 	// Gerenciador
 
 	GerenciadorDeUsuarios gs = new GerenciadorDeUsuarios();
+	// Gerenciador de Produtos
+		GerenciadorDeProdutos gp = new GerenciadorDeProdutos();
+
 
 	// Construtor vazio
 	public HandleMenu() {
 		// toda vez que a classe menu, for instanciada, o nosso arquivo sera verificado
 		gs.verificaECria("usuarios.txt");
+		gp.verificaECria("produtos.txt");
 	}
-
-
 
 	public void criar() {
 		System.out.println("Digite o nome: ");
@@ -84,64 +86,80 @@ public class HandleMenu {
 		return maxId + 1;
 
 	}
+
+	public void trocarSenhaUsuario(Scanner sc, GerenciadorDeUsuarios gp) {
+		System.out.println("Digite o ID do usuário: ");
+		int id = sc.nextInt();
+		System.out.println("Digite a senha antiga: ");
+		String senhaAntiga = sc.next();
+		System.out.println("Digite a nova senha: ");
+		String novaSenha = sc.next();
+
+		// Chama o método trocarSenha do GerenciadorDeUsuarios
+		gs.trocarSenha(id, senhaAntiga, novaSenha);
+	}
+
 	
-	 // Gerenciador de Produtos
-    GerenciadorDeProdutos gp = new GerenciadorDeProdutos();
+	// Métodos para operações com produtos
 
-    // Métodos para operações com produtos
+	public void criarProduto() {
+		System.out.println("Digite o nome do produto: ");
+		String nome = sc.next();
+		System.out.println("Digite o preço do produto: ");
+		double preco = sc.nextDouble();
+		System.out.println("Digite a quantidade do produto: ");
+		int quantidade = sc.nextInt();
+		System.out.println("Produto Cadastrado!");
+		long id = getNextProdutoId();
+		Produto produto = new Produto(id, nome, preco, quantidade);
+		gp.adicionarProduto(produto);
+	}
 
-    public void criarProduto() {
-        System.out.println("Digite o nome do produto: ");
-        String nome = sc.next();
-        System.out.println("Digite o preço do produto: ");
-        double preco = sc.nextDouble();
-        System.out.println("Digite a quantidade do produto: ");
-        int quantidade = sc.nextInt();
+	public void editarProduto() {
+		System.out.println("Digite o ID do produto: ");
+		long id = sc.nextLong();
+		System.out.println("Digite o novo nome do produto: ");
+		String nome = sc.next();
+		System.out.println("Digite o novo preço do produto: ");
+		double preco = sc.nextDouble();
+		System.out.println("Digite a nova quantidade do produto: ");
+		int quantidade = sc.nextInt();
+		System.out.println("Produto alterado com sucesso!");
+		gp.editarProduto(id, nome, preco, quantidade);
+	}
 
-        long id = getNextProdutoId();
-        Produto produto = new Produto(id, nome, preco, quantidade);
-        gp.adicionarProduto(produto);
-    }
+	public void deletarProduto() {
+		System.out.println("Digite o ID do produto a ser deletado: ");
+		long id = sc.nextLong();
+		gp.deletarProduto(id);
+	}
 
-    public void editarProduto() {
-        System.out.println("Digite o ID do produto: ");
-        long id = sc.nextLong();
-        System.out.println("Digite o novo nome do produto: ");
-        String nome = sc.next();
-        System.out.println("Digite o novo preço do produto: ");
-        double preco = sc.nextDouble();
-        System.out.println("Digite a nova quantidade do produto: ");
-        int quantidade = sc.nextInt();
+	public void listarProdutos() {
+		gp.listarProdutos();
+	}
 
-        gp.editarProduto(id, nome, preco, quantidade);
-    }
+	public void buscarProduto() {
+		System.out.println("Digite o ID do produto para buscar: ");
+		long id = sc.nextLong();
+		gp.buscarUnico(id);
+	}
 
-    public void deletarProduto() {
-        System.out.println("Digite o ID do produto a ser deletado: ");
-        long id = sc.nextLong();
-        gp.deletarProduto(id);
-    }
+	// Método auxiliar para obter o próximo ID de produto
+	private long getNextProdutoId() {
+		List<Produto> produtos = gp.lerProdutos();
+		long maxId = 0;
+		for (Produto produto : produtos) {
+			if (produto.getId() > maxId) {
+				maxId = produto.getId();
+			}
+		}
+		return maxId + 1;
+	}
 
-    public void listarProdutos() {
-        gp.listarProdutos();
-    }
-
-    public void buscarProduto() {
-        System.out.println("Digite o ID do produto para buscar: ");
-        long id = sc.nextLong();
-        gp.buscarUnico(id);
-    }
-
-    // Método auxiliar para obter o próximo ID de produto
-    private long getNextProdutoId() {
-        List<Produto> produtos = gp.lerProdutos();
-        long maxId = 0;
-        for (Produto produto : produtos) {
-            if (produto.getId() > maxId) {
-                maxId = produto.getId();
-            }
-        }
-        return maxId + 1;
-    }
+	public void somarPrecos() {
+		gp.somarPrecos();	
 }
-
+	public void contarQuantidadeProdutos() {
+		gp.contarQuantidadeProdutos();
+	}
+}

@@ -31,7 +31,9 @@ public class GerenciadorDeProdutos {
 
 	public void adicionarProduto(Produto produto) {
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(NOME_ARQUIVO, true))) {
-			bw.write(produto.toString());
+			String linha = produto.getId() + ";" + produto.getNome() + ";" + produto.getPreco() + ";"
+					+ produto.getQuantidade();
+			bw.write(linha);
 			bw.newLine();
 		} catch (IOException e) {
 			System.out.println("Ocorreu um erro ao escrever no arquivo: " + e.getMessage());
@@ -44,8 +46,20 @@ public class GerenciadorDeProdutos {
 			String linha;
 			while ((linha = br.readLine()) != null) {
 				String[] partes = linha.split(";");
-				produtos.add(new Produto(Long.parseLong(partes[0]), partes[1], Double.parseDouble(partes[2]),
-						Integer.parseInt(partes[3])));
+				if (partes.length < 4) {
+					System.out.println(linha);
+					continue; // Pule para a próxima linha
+				}
+				try {
+					long id = Long.parseLong(partes[0]);
+					String nome = partes[1];
+					double preco = Double.parseDouble(partes[2]);
+					int quantidade = Integer.parseInt(partes[3]);
+					produtos.add(new Produto(id, nome, preco, quantidade));
+				} catch (NumberFormatException e) {
+					System.out.println("Erro ao converter número na linha: " + linha);
+					e.printStackTrace(); // Imprima o stack trace para diagnóstico
+				}
 			}
 		} catch (IOException e) {
 			System.out.println("Ocorreu um erro ao ler o arquivo: " + e.getMessage());
@@ -116,4 +130,22 @@ public class GerenciadorDeProdutos {
 			}
 		}
 	}
+
+	public void somarPrecos() {
+        List<Produto> produtos = lerProdutos();
+        double total = 0;
+        for (Produto produto : produtos) {
+            total += produto.getPreco() * produto.getQuantidade();
+        }
+        System.out.printf("O valor total dos produtos em estoque é: R$ %.2f\n", total);
+    }
+
+    public void contarQuantidadeProdutos() {
+        List<Produto> produtos = lerProdutos();
+        int totalQuantidade = 0;
+        for (Produto produto : produtos) {
+            totalQuantidade += produto.getQuantidade();
+        }
+        System.out.println("A quantidade total de produtos em estoque é: " + totalQuantidade);
+    }
 }

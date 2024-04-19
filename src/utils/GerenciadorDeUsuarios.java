@@ -114,5 +114,23 @@ public class GerenciadorDeUsuarios {
 			}
 		}
 	}
-	 	
+
+	public void trocarSenha(int id, String senhaAntiga, String novaSenha) {
+		List<Usuario> usuarios = lerUsuarios();
+		boolean encontrado = false;
+		for (Usuario usuario : usuarios) {
+			if (usuario.getId() == id && usuario.getSenha().equals(senhaAntiga)) {
+				usuario.setSenha(novaSenha);
+				encontrado = true;
+				break;
+			}
+		}
+		if (encontrado) {
+			reescreverArquivo(usuarios);
+			System.out.println("Senha trocada com sucesso");
+		} else {
+			System.out.println("Usuário não encontrado ou senha antiga incorreta");
+		}
+	}
+
 }

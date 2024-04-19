@@ -34,7 +34,7 @@ public class Sistema {
 		int opcao = 0;
 		do {
 			System.out.println("1- Criar Usuário\n2- Editar Usuário\n3 - Deletar Usuário\n"
-					+ "4 - Listar Usuários\n5 - Buscar Usuário\n9 - Voltar ao Menu Principal\n");
+					+ "4 - Listar Usuários\n5 - Buscar Usuário \n6- Trocar Senha do Usuário \n\n9 - Voltar ao Menu Principal\n");
 			opcao = sc.nextInt();
 			switch (opcao) {
 			case 1:
@@ -52,6 +52,9 @@ public class Sistema {
 			case 5:
 				hm.buscarUnico();
 				break;
+			case 6:
+				hm.trocarSenhaUsuario(sc, null);
+				break;
 			case 9:
 				System.out.println("Voltando ao Menu Principal...");
 				break;
@@ -62,11 +65,13 @@ public class Sistema {
 		} while (opcao != 9);
 	}
 
+
+
 	private static void operacoesProdutos(Scanner sc, HandleMenu hm) {
 		int opcao = 0;
 		do {
 			System.out.println("1- Criar Produto\n2- Editar Produto\n3 - Deletar Produto\n"
-					+ "4 - Listar Produtos\n5 - Buscar Produto\n9 - Voltar ao Menu Principal\n");
+					+ "4 - Listar Produtos\n5 - Buscar Produto \n6 - Somar Preços dos Produtos \n7- Contar Produtos \n9 - Voltar ao Menu Principal\n");
 			opcao = sc.nextInt();
 			switch (opcao) {
 			case 1:
@@ -83,6 +88,12 @@ public class Sistema {
 				break;
 			case 5:
 				hm.buscarProduto();
+				break;
+			case 6:
+				hm.somarPrecos();
+				break;
+			case 7:
+				hm.contarQuantidadeProdutos();
 				break;
 			case 9:
 				System.out.println("Voltando ao Menu Principal...");
